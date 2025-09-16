@@ -19,12 +19,12 @@ class EmployeeController extends Controller
     {
         $this->employeeRepository = $employeeRepository;
     }
-    
+
     public function list()
     {
         try {
 
-            $data = $this->employeeRepository->getAllEmployee();
+            $data = $this->employeeRepository->getAllEmployee(null, Carbon::now()->format('Y-m-d'));
 
             $result = Helper::setResults($data);
 
@@ -65,7 +65,7 @@ class EmployeeController extends Controller
             $param = [
                 'working_unit_id' => $workingUnitId,
             ];
-            
+
             $data = $this->employeeRepository->getAllEmployee($param['working_unit_id']);
 
             $result = Helper::setResults($data);
@@ -85,7 +85,7 @@ class EmployeeController extends Controller
         try {
 
             $dataRequest = $request->all();
-        
+
             $rules = [
                 'employee_no'             => 'required|is_unique[employees.employee_no]',
                 'name'                    => 'required',
@@ -119,7 +119,6 @@ class EmployeeController extends Controller
             $result = Helper::setResults($data);
 
             return $this->resSuccess($data, $result['res_status'], $result['msg'], $result['status_msg'], $result['result']);
-        
         } catch (\Throwable $th) {
 
             $error = [
@@ -180,5 +179,4 @@ class EmployeeController extends Controller
             ], 500);
         }
     }
-
 }

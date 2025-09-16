@@ -31,4 +31,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/create', 'EmployeeController@create');
         $router->post('/create-multiple', 'EmployeeController@createMultiple');
     });
+
+    $router->group(['prefix' => 'mutasi'], function () use ($router) {
+        $router->get('/list', 'MutasiController@list');
+        $router->get('/detail/{mutasiId}', 'MutasiController@detail');
+    });
+
+    $router->group(['prefix' => 'journal-item'], function () use ($router) {
+        $router->get('/list', 'JournalItemController@list');
+        $router->get('/detail/{mutasiId}', 'JournalItemController@detail');
+    });
 });

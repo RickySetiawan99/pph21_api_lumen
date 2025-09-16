@@ -4,16 +4,25 @@ namespace App\Repositories;
 
 use App\Helpers\Helper;
 use App\Models\Employee;
+use Carbon\Carbon;
 
 class EmployeeRepository
 {
-    public function getAllEmployee($workingUnitId = null)
+    public function getAllEmployee($workingUnitId = null, $date = null)
     {
+        $date = !empty($date) ? Carbon::parse($date)->format('Y-m-d') : Carbon::now()->format('Y-m-d');
+
+        $startOfMonth = Carbon::parse($date)->startOfMonth()->format('Y-m-d');
+
+        $query = Employee::query();
+
         if (!empty($workingUnitId)) {
-            $getEmployee = Employee::where('current_working_unit_id', $workingUnitId)->get();
-        } else {
-            $getEmployee = Employee::all();
+            $query->where('current_working_unit_id', $workingUnitId);
         }
+
+        $query->whereBetween('created_at', [$startOfMonth, $date]);
+
+        $getEmployee = $query->get();
 
         $dataEmployee = $this->dataEmployee($getEmployee);
 
@@ -24,9 +33,8 @@ class EmployeeRepository
 
     public function dataEmployee($getEmployee)
     {
-        if(count($getEmployee) > 0)
-        {
-            $dataEmployee = $getEmployee->map(function($employee) {
+        if (count($getEmployee) > 0) {
+            $dataEmployee = $getEmployee->map(function ($employee) {
                 $array_data = $this->arrayData($employee);
                 return $array_data;
             });
@@ -76,6 +84,8 @@ class EmployeeRepository
                 'position_id' => $getEmployee->position_id,
                 'address' => $getEmployee->address,
                 'gender' => $getEmployee->gender,
+                'created_at' => $getEmployee->created_at,
+                'updated_at' => $getEmployee->updated_at,
             ];
         } else {
             $dataEmployee = [];
