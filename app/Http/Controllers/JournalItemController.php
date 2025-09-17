@@ -54,4 +54,47 @@ class JournalItemController extends Controller
             return $this->resCatchError($error);
         }
     }
+
+    public function listDummy()
+    {
+        $response = [
+            "success" => true,
+            "info" => [
+                "bulan_now" => "08",
+                "tahun_now" => "2025",
+                "row_count" => 8408,
+            ],
+            "data" => [
+                [
+                    "jenis" => "F0001",
+                    "kode_coa" => 53101,
+                    "no_rekening" => "2108036276",
+                    "unit_kerja" => "172",
+                    "tipe_id" => 40,
+                    "jumlah" => 523100,
+                    "tanggal_transaksi" => "2025-08-01",
+                ],
+                [
+                    "jenis" => "F0001",
+                    "kode_coa" => 53101,
+                    "no_rekening" => "3109049378",
+                    "unit_kerja" => "007",
+                    "tipe_id" => 40,
+                    "jumlah" => 436500,
+                    "tanggal_transaksi" => "2025-08-01",
+                ],
+                [
+                    "jenis" => "F0001",
+                    "kode_coa" => 53101,
+                    "no_rekening" => "3117000035",
+                    "unit_kerja" => "117",
+                    "tipe_id" => 40,
+                    "jumlah" => 461000,
+                    "tanggal_transaksi" => "2025-08-01",
+                ],
+            ]
+        ];
+
+        return response()->json($response);
+    }
 }

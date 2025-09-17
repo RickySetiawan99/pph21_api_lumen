@@ -35,10 +35,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'mutasi'], function () use ($router) {
         $router->get('/list', 'MutasiController@list');
         $router->get('/detail/{mutasiId}', 'MutasiController@detail');
+
+        $router->get('/list-dummy', 'MutasiController@listDummy');
     });
 
     $router->group(['prefix' => 'journal-item'], function () use ($router) {
         $router->get('/list', 'JournalItemController@list');
         $router->get('/detail/{mutasiId}', 'JournalItemController@detail');
+        
+        $router->get('/list-dummy', 'JournalItemController@listDummy');
     });
 });
