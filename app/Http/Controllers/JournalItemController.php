@@ -160,43 +160,7 @@ class JournalItemController extends Controller
                     "tipe_id" => 59,
                     "jumlah" => $this->generateJumlah($month, $year, 54302),
                     "tanggal_transaksi" => $tanggalTransaksi
-                ],
-                [
-                    "jenis" => "F0001",
-                    "kode_coa" => 53101,
-                    "no_rekening" => "4353453",
-                    "unit_kerja" => "7",
-                    "tipe_id" => 40,
-                    "jumlah" => $this->generateJumlah($month, $year, 53101),
-                    "tanggal_transaksi" => $tanggalTransaksi
-                ],
-                [
-                    "jenis" => "F0001",
-                    "kode_coa" => 53304,
-                    "no_rekening" => "4353453",
-                    "unit_kerja" => "7",
-                    "tipe_id" => 32,
-                    "jumlah" => $this->generateJumlah($month, $year, 53304),
-                    "tanggal_transaksi" => $tanggalTransaksi
-                ],
-                [
-                    "jenis" => "F0001",
-                    "kode_coa" => 53305,
-                    "no_rekening" => "4353453",
-                    "unit_kerja" => "7",
-                    "tipe_id" => 33,
-                    "jumlah" => $this->generateJumlah($month, $year, 53305),
-                    "tanggal_transaksi" => $tanggalTransaksi
-                ],
-                [
-                    "jenis" => "F0002",
-                    "kode_coa" => 53306,
-                    "no_rekening" => "4353453",
-                    "unit_kerja" => "7",
-                    "tipe_id" => 52,
-                    "jumlah" => $this->generateJumlah($month, $year, 53306),
-                    "tanggal_transaksi" => $tanggalTransaksi
-                ],
+                ]
             ]
         ];
 
