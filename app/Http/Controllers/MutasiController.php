@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Helpers\Helper;
 use App\Repositories\MutasiRepository;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class MutasiController extends Controller
 {
@@ -55,23 +56,42 @@ class MutasiController extends Controller
         }
     }
 
-    public function listDummy()
+    public function listDummy(Request $request)
     {
+        $month = $request->route('month');
+        $year  = $request->route('year');
+
+        // Format bulan sekarang (2 digit)
+        $bulanNow = str_pad($month, 2, '0', STR_PAD_LEFT);
+        $tahunNow = (string) $year;
+
+        // Hitung bulan sebelumnya
+        $prevMonth = $month - 1;
+        $prevYear  = $year;
+
+        if ($prevMonth === 0) {
+            $prevMonth = 12;
+            $prevYear  = $year - 1;
+        }
+
+        $bulanPrev = str_pad($prevMonth, 2, '0', STR_PAD_LEFT);
+        $tahunPrev = (string) $prevYear;
+
         $response = [
             "success" => true,
             "info" => [
-                "bulan_now" => "08",
-                "tahun_now" => "2025",
-                "bulan_prev" => "07",
-                "tahun_prev" => "2025",
-                "row_count" => 56,
+                "bulan_now"  => $bulanNow,
+                "tahun_now"  => $tahunNow,
+                "bulan_prev" => $bulanPrev,
+                "tahun_prev" => $tahunPrev,
+                "row_count"  => 3,
             ],
             "data" => [
                 [
                     "no_rekening" => "3034234578",
                     "unit_kerja_lama" => "001",
                     "unit_kerja_baru" => "001",
-                    "terhitung_mulai" => "2025-08-01",
+                    "terhitung_mulai" => "{$tahunNow}-{$bulanNow}-01",
                     "jabatan_lama_id" => 56,
                     "jabatan_baru_id" => 56,
                     "status_id" => 5,
@@ -81,7 +101,7 @@ class MutasiController extends Controller
                     "no_rekening" => "3034234459",
                     "unit_kerja_lama" => "001",
                     "unit_kerja_baru" => "001",
-                    "terhitung_mulai" => "2025-08-01",
+                    "terhitung_mulai" => "{$tahunNow}-{$bulanNow}-01",
                     "jabatan_lama_id" => 57,
                     "jabatan_baru_id" => 56,
                     "status_id" => 5,
@@ -91,7 +111,7 @@ class MutasiController extends Controller
                     "no_rekening" => "2038807257",
                     "unit_kerja_lama" => "001",
                     "unit_kerja_baru" => "001",
-                    "terhitung_mulai" => "2025-08-01",
+                    "terhitung_mulai" => "{$tahunNow}-{$bulanNow}-01",
                     "jabatan_lama_id" => 56,
                     "jabatan_baru_id" => 56,
                     "status_id" => 5,

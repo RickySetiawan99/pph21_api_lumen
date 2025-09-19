@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Helpers\Helper;
 use App\Repositories\JournalItemRepository;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class JournalItemController extends Controller
 {
@@ -55,46 +56,126 @@ class JournalItemController extends Controller
         }
     }
 
-    public function listDummy()
+    public function listDummy(Request $request)
     {
+        $month = $request->route('month');
+        $year  = $request->route('year');
+
+        $tanggalTransaksi = sprintf("%04d-%02d-01", $year, $month);
+
         $response = [
             "success" => true,
             "info" => [
-                "bulan_now" => "08",
-                "tahun_now" => "2025",
-                "row_count" => 8408,
+                "bulan_now" => (string) $month,
+                "tahun_now" => (string) $year,
+                "row_count" => 10,
             ],
             "data" => [
                 [
                     "jenis" => "F0001",
                     "kode_coa" => 53101,
-                    "no_rekening" => "2108036276",
-                    "unit_kerja" => "172",
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
                     "tipe_id" => 40,
-                    "jumlah" => 523100,
-                    "tanggal_transaksi" => "2025-08-01",
+                    "jumlah" => $this->generateJumlah($month, $year, 53101),
+                    "tanggal_transaksi" => $tanggalTransaksi
                 ],
                 [
                     "jenis" => "F0001",
-                    "kode_coa" => 53101,
-                    "no_rekening" => "3109049378",
-                    "unit_kerja" => "007",
-                    "tipe_id" => 40,
-                    "jumlah" => 436500,
-                    "tanggal_transaksi" => "2025-08-01",
+                    "kode_coa" => 53304,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 32,
+                    "jumlah" => $this->generateJumlah($month, $year, 53304),
+                    "tanggal_transaksi" => $tanggalTransaksi
                 ],
                 [
                     "jenis" => "F0001",
-                    "kode_coa" => 53101,
-                    "no_rekening" => "3117000035",
-                    "unit_kerja" => "117",
-                    "tipe_id" => 40,
-                    "jumlah" => 461000,
-                    "tanggal_transaksi" => "2025-08-01",
+                    "kode_coa" => 53305,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 33,
+                    "jumlah" => $this->generateJumlah($month, $year, 53305),
+                    "tanggal_transaksi" => $tanggalTransaksi
                 ],
+                [
+                    "jenis" => "F0002",
+                    "kode_coa" => 53306,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 52,
+                    "jumlah" => $this->generateJumlah($month, $year, 53306),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ],
+                [
+                    "jenis" => "F0002",
+                    "kode_coa" => 56526,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 49,
+                    "jumlah" => $this->generateJumlah($month, $year, 56526),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ],
+                [
+                    "jenis" => "F0002",
+                    "kode_coa" => 53306,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 52,
+                    "jumlah" => $this->generateJumlah($month, $year, 53306),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ],
+                [
+                    "jenis" => "F0003",
+                    "kode_coa" => 56010,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 53,
+                    "jumlah" => $this->generateJumlah($month, $year, 56010),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ],
+                [
+                    "jenis" => "F0003",
+                    "kode_coa" => 54302,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 67,
+                    "jumlah" => $this->generateJumlah($month, $year, 54302),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ],
+                [
+                    "jenis" => "F0003",
+                    "kode_coa" => 54302,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 61,
+                    "jumlah" => $this->generateJumlah($month, $year, 54302),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ],
+                [
+                    "jenis" => "F0003",
+                    "kode_coa" => 54302,
+                    "no_rekening" => "4353453",
+                    "unit_kerja" => "7",
+                    "tipe_id" => 59,
+                    "jumlah" => $this->generateJumlah($month, $year, 54302),
+                    "tanggal_transaksi" => $tanggalTransaksi
+                ]
             ]
         ];
 
         return response()->json($response);
+    }
+
+    public function generateJumlah($month, $year, $kodeCoa)
+    {
+        // seed tetap agar hasil sama selama month-year sama
+        $seed = crc32($month . $year . $kodeCoa);
+        mt_srand($seed);
+
+        // generate kelipatan ribuan antara 900k - 20jt
+        $random = mt_rand(900, 20000) * 1000;
+
+        return $random;
     }
 }
