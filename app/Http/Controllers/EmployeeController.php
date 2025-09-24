@@ -10,6 +10,7 @@ use App\Repositories\EmployeeRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Faker\Factory as Faker;
 
 class EmployeeController extends Controller
 {
@@ -131,7 +132,7 @@ class EmployeeController extends Controller
     public function createMultiple(Request $request)
     {
         $data = $request->all();
-        
+
         $rules = [
             'employee_no'             => 'required|is_unique[employees.employee_no]',
             'name'                    => 'required',
@@ -178,5 +179,73 @@ class EmployeeController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function listDummy(Request $request)
+    {
+        $month = $request->route('month');
+        $year  = $request->route('year');
+
+        // Format bulan sekarang (2 digit)
+        $bulanNow = str_pad($month, 2, '0', STR_PAD_LEFT);
+        $tahunNow = (string) $year;
+
+        // Hitung bulan sebelumnya
+        $prevMonth = $month - 1;
+        $prevYear  = $year;
+
+        if ($prevMonth === 0) {
+            $prevMonth = 12;
+            $prevYear  = $year - 1;
+        }
+
+        $bulanPrev = str_pad($prevMonth, 2, '0', STR_PAD_LEFT);
+        $tahunPrev = (string) $prevYear;
+
+        // Faker dengan lokal Indonesia
+        $faker = Faker::create('id_ID');
+
+        // Seed agar konsisten kalau bulan/tahun sama
+        $seed = intval($tahunNow . $bulanNow);
+        $faker->seed($seed);
+
+        $data = [];
+        for ($i = 0; $i < 15; $i++) {
+            $fullName = $faker->name();
+            $email    = strtolower(str_replace(' ', '_', $fullName)) . $i . "@example.com";
+
+            $data[] = [
+                "nip"               => "TK." . str_pad((string)(10000 + $i + 1), 5, "0", STR_PAD_LEFT),
+                "nama"              => strtoupper($fullName),
+                "npwp"              => $faker->numerify(str_repeat('#', 15)), // 15 digit
+                "no_ktp"            => $faker->numerify(str_repeat('#', 16)), // 16 digit
+                "kode_green_baru"   => "001",
+                "email"             => $email,
+                "id_ptkp"           => 1,
+                "menikah"           => "f",
+                "pegawai_tetap"     => "f",
+                "jumlah_tanggungan" => 0,
+                "no_rekening"       => $faker->bankAccountNumber(),
+                "id_status"         => 2,
+                "id_type"           => 2,
+                "id_posisi"         => 4,
+                "kota"              => $faker->city(),
+                "jenis_kelamin"     => 1
+            ];
+        }
+
+        $response = [
+            "success" => true,
+            "info" => [
+                "bulan_now"  => $bulanNow,
+                "tahun_now"  => $tahunNow,
+                "bulan_prev" => $bulanPrev,
+                "tahun_prev" => $tahunPrev,
+                "row_count"  => count($data),
+            ],
+            "data" => $data
+        ];
+
+        return response()->json($response);
     }
 }

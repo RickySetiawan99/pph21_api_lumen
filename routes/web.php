@@ -30,6 +30,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->post('/create', 'EmployeeController@create');
         $router->post('/create-multiple', 'EmployeeController@createMultiple');
+
+        $router->get('/list-dummy/{month}/{year}', 'EmployeeController@listDummy');
     });
 
     $router->group(['prefix' => 'mutasi'], function () use ($router) {
