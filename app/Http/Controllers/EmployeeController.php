@@ -210,7 +210,8 @@ class EmployeeController extends Controller
         $faker->seed($seed);
 
         $data = [];
-        for ($i = 0; $i < 15; $i++) {
+        $jumlahData = rand(1, 15);
+        for ($i = 0; $i < $jumlahData; $i++) {
             $fullName = $faker->name();
             $email    = strtolower(str_replace(' ', '_', $fullName)) . $i . "@example.com";
 
